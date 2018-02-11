@@ -111,20 +111,20 @@ class RequestFactory
 		$reChars = '#^[' . self::CHARS . ']*+\z#u';
 		if (!$this->binary) {
 			$list = [&$query, &$post, &$cookies];
-			while (list($key, $val) = @each($list)) { // @ intentionally, deprecated in PHP 7.2
-				foreach ($val as $k => $v) {
-					if (is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
-						unset($list[$key][$k]);
+            foreach($list as $key => &$val){ //for php7.2
+                foreach ($val as $k => $v) {
+                    if (is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
+                        unset($list[$key][$k]);
 
-					} elseif (is_array($v)) {
-						$list[$key][$k] = $v;
-						$list[] = &$list[$key][$k];
+                    } elseif (is_array($v)) {
+                        $list[$key][$k] = $v;
+                        $list[] = &$list[$key][$k];
 
-					} else {
-						$list[$key][$k] = (string) preg_replace('#[^' . self::CHARS . ']+#u', '', $v);
-					}
-				}
-			}
+                    } else {
+                        $list[$key][$k] = (string) preg_replace('#[^' . self::CHARS . ']+#u', '', $v);
+                    }
+                }
+            }
 			unset($list, $key, $val, $k, $v);
 		}
 		$url->setQuery($query);
@@ -145,35 +145,34 @@ class RequestFactory
 			}
 		}
 
-		while (list(, $v) = @each($list)) { // @ intentionally, deprecated in PHP 7.2
-			if (!isset($v['name'])) {
-				continue;
+        foreach($list as &$v){ //for php7.2
+            if (!isset($v['name'])) {
+                continue;
 
-			} elseif (!is_array($v['name'])) {
-				if (!$this->binary && (!preg_match($reChars, $v['name']) || preg_last_error())) {
-					$v['name'] = '';
-				}
-				if ($v['error'] !== UPLOAD_ERR_NO_FILE) {
-					$v['@'] = new FileUpload($v);
-				}
-				continue;
-			}
+            } elseif (!is_array($v['name'])) {
+                if (!$this->binary && (!preg_match($reChars, $v['name']) || preg_last_error())) {
+                    $v['name'] = '';
+                }
+                if ($v['error'] !== UPLOAD_ERR_NO_FILE) {
+                    $v['@'] = new FileUpload($v);
+                }
+                continue;
+            }
 
-			foreach ($v['name'] as $k => $foo) {
-				if (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
-					continue;
-				}
-				$list[] = [
-					'name' => $v['name'][$k],
-					'type' => $v['type'][$k],
-					'size' => $v['size'][$k],
-					'tmp_name' => $v['tmp_name'][$k],
-					'error' => $v['error'][$k],
-					'@' => &$v['@'][$k],
-				];
-			}
-		}
-
+            foreach ($v['name'] as $k => $foo) {
+                if (!$this->binary && is_string($k) && (!preg_match($reChars, $k) || preg_last_error())) {
+                    continue;
+                }
+                $list[] = [
+                    'name' => $v['name'][$k],
+                    'type' => $v['type'][$k],
+                    'size' => $v['size'][$k],
+                    'tmp_name' => $v['tmp_name'][$k],
+                    'error' => $v['error'][$k],
+                    '@' => &$v['@'][$k],
+                ];
+            }
+        }
 
 		// HEADERS
 		if (function_exists('apache_request_headers')) {

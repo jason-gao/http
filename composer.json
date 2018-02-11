@@ -1,5 +1,5 @@
 {
-	"name": "nette/http",
+	"name": "jason-gao/http",
 	"description": "🌐 Nette Http: abstraction for HTTP request, response and session. Provides careful data sanitization and utility for URL and cookies manipulation.",
 	"keywords": ["nette", "http", "request", "response", "session", "security", "url", "proxy", "cookies"],
 	"homepage": "https://nette.org",
@@ -12,6 +12,10 @@
 		{
 			"name": "Nette Community",
 			"homepage": "https://nette.org/contributors"
+		},
+		{
+			"name": "jason-gao",
+			"homepage": "https://github.com/jason-gao"
 		}
 	],
 	"require": {

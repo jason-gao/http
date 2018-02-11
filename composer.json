@@ -1,12 +1,12 @@
 {
-	"name": "nette/http",
+	"name": "jason-gao/http",
 	"description": "🌐 Nette Http: abstraction for HTTP request, response and session. Provides careful data sanitization and utility for URL and cookies manipulation.",
 	"keywords": ["nette", "http", "request", "response", "session", "security", "url", "proxy", "cookies"],
 	"homepage": "https://nette.org",
 	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
 	"authors": [
 		{
-			"name": "David Grudl",
+			"name": "jason-gao",
 			"homepage": "https://davidgrudl.com"
 		},
 		{
